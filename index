@@ -1,0 +1,161 @@
+//JOAN QUE FAS AQUI??????????
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Codis TDR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2e6; /* Fons verd clar */
+            color: #2e8b57; /* Verd fosc per al text */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #2e8b57; /* Verd fosc */
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .logo {
+            width: 100px; /* Ajusta la mida del logo segons calgui */
+            height: auto;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #2e8b57;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            text-decoration: none;
+            background-color: #3cb371; /* Verd mitjà */
+            color: white;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #2e8b57; /* Quan passes el ratolí, canvia a verd fosc */
+        }
+
+        footer {
+            background-color: #2e8b57;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://i.ibb.co/NrGTCFL/imatge-removebg-preview.png" alt="Logo Codis TDR" class="logo">
+        <h1>Codis TDR</h1>
+        <div class="dropdown">
+            <button>Seleccionar codi</button>
+            <div class="dropdown-content">
+                <a href="?codi=1">Codi TDR 1</a>
+                <a href="?codi=2">Codi TDR 2</a>
+                <a href="?codi=3">Codi TDR 3</a>
+                <a href="?codi=4">Codi TDR 4</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container" id="codi-container">
+            <!-- Aquí es mostrarà el botó del codi corresponent -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Codis TDR. Tots els drets reservats.</p>
+    </footer>
+
+    <script>
+        // Funció per obtenir el valor del paràmetre 'codi' de la URL
+        function getCodiFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('codi');
+        }
+
+        // Mostrar el codi correcte depenent de la URL
+        function mostrarCodi() {
+            const codi = getCodiFromURL();
+            const container = document.getElementById('codi-container');
+
+            // Netejar el contingut
+            container.innerHTML = '';
+
+            // Crear el botó del codi seleccionat
+            if (codi) {
+                const button = document.createElement('a');
+                button.href = `https://www.enllaç${codi}.com`;
+                button.textContent = `Codi TDR ${codi}`;
+                container.appendChild(button);
+            } else {
+                container.textContent = 'Selecciona un codi del menú desplegable.';
+            }
+        }
+
+        // Cridar la funció en carregar la pàgina
+        window.onload = mostrarCodi;
+    </script>
+
+</body>
+</html>
