@@ -1,4 +1,3 @@
-// JOAN QUE ET SEMBLA?? :)
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -109,10 +108,13 @@
         <div class="dropdown">
             <button>Seleccionar codi</button>
             <div class="dropdown-content">
-                <a href="?codi=1">Codi TDR 1</a>
-                <a href="?codi=2">Codi TDR 2</a>
-                <a href="?codi=3">Codi TDR 3</a>
-                <a href="?codi=4">Codi TDR 4</a>
+                <a href="?codi=leibniz">Leibniz</a>
+                <a href="?codi=basilea">Basilea</a>
+                <a href="?codi=brouncker">Brouncker</a>
+                <a href="?codi=john-wallis">John Wallis</a>
+                <a href="?codi=ramanujan">Ramanujan</a>
+                <a href="?codi=viete">Viète</a>
+                <a href="?codi=bbp">BBP</a>
             </div>
         </div>
     </header>
@@ -145,12 +147,25 @@
             // Crear el botó del codi seleccionat
             if (codi) {
                 const button = document.createElement('a');
-                button.href = `https://www.enllaç${codi}.com`;
-                button.textContent = `Codi TDR ${codi}`;
+                button.href = `https://colab.research.google.com/drive/${getEnllaç(codi)}`;
+                button.textContent = `Codi ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
                 container.appendChild(button);
             } else {
                 container.textContent = 'Selecciona un codi del menú desplegable.';
             }
+        }
+
+        function getEnllaç(codi) {
+            const enllaços = {
+                leibniz: '1GybBcnVZbiNxBsSdWN7HoD421zZsGFy3?usp=sharing',
+                basilea: '1YPS0IcUq98zDi996sJjOx-oZmFuTsl8B?usp=sharing',
+                brouncker: '1lk3kfVhTLEIkxGL0P87aeg-gr9y80h5i?usp=sharing',
+                'john-wallis': '19s3iJTuJb4FgGrSfgjj1HTp5gbe9op-z?usp=sharing',
+                ramanujan: '16hG1gM4HnktyehbqVQWYhZnQ-mZt1wyC?usp=sharing',
+                viete: '11civzhEQG8yf2zmcygHlcTKCqVjqHGmE?usp=sharing',
+                bbp: '1eblBGAnqYKyrdu9r4dP20D6EcTivfQ5W?usp=sharing'
+            };
+            return enllaços[codi];
         }
 
         // Cridar la funció en carregar la pàgina
