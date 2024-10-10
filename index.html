@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Codis TDR</title>
+
+    <!-- Google Fonts i Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #e6f2e6; /* Fons verd clar */
             color: #2e8b57; /* Verd fosc per al text */
             margin: 0;
@@ -29,7 +34,7 @@
         }
 
         .logo {
-            width: 100px; /* Ajusta la mida del logo segons calgui */
+            width: 100px;
             height: auto;
         }
 
@@ -58,6 +63,12 @@
             background-color: #f1f1f1;
         }
 
+        .dropdown-content a::before {
+            content: '\f0c1'; /* Icona d'enllaç */
+            font-family: 'Font Awesome 5 Free';
+            padding-right: 8px;
+        }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
@@ -78,7 +89,7 @@
             margin: 10px;
             padding: 15px 30px;
             text-decoration: none;
-            background-color: #3cb371; /* Verd mitjà */
+            background-color: #3cb371;
             color: white;
             border-radius: 5px;
             font-size: 1.2rem;
@@ -86,7 +97,7 @@
         }
 
         a:hover {
-            background-color: #2e8b57; /* Quan passes el ratolí, canvia a verd fosc */
+            background-color: #226b43; /* Verd més fosc */
         }
 
         footer {
@@ -130,22 +141,24 @@
     </footer>
 
     <script>
-        // Funció per obtenir el valor del paràmetre 'codi' de la URL
         function getCodiFromURL() {
             const params = new URLSearchParams(window.location.search);
             return params.get('codi');
         }
 
-        // Mostrar el codi correcte depenent de la URL
         function mostrarCodi() {
             const codi = getCodiFromURL();
             const container = document.getElementById('codi-container');
+            const dropdownButton = document.querySelector('.dropdown button');
 
             // Netejar el contingut
             container.innerHTML = '';
 
-            // Crear el botó del codi seleccionat
+            // Actualitzar el botó amb el codi seleccionat
             if (codi) {
+                dropdownButton.textContent = `Codi seleccionat: ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
+
+                // Crear el botó del codi seleccionat
                 const button = document.createElement('a');
                 button.href = `https://colab.research.google.com/drive/${getEnllaç(codi)}`;
                 button.textContent = `Codi ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
@@ -168,7 +181,6 @@
             return enllaços[codi];
         }
 
-        // Cridar la funció en carregar la pàgina
         window.onload = mostrarCodi;
     </script>
 
