@@ -1,14 +1,176 @@
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Codis TDR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2e6; /* Fons verd clar */
+            color: #2e8b57; /* Verd fosc per al text */
+            margin: 0;
+            padding: 0;
+        }
 
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-    }
+        header {
+            background-color: #2e8b57; /* Verd fosc */
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .dropdown-content a::before {
-        content: '\f0c1'; /* Afegeix una icona d'enllaç */
-        font-family: 'Font Awesome 5 Free';
-        padding-right: 8px;
-    }
-</style>
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .logo {
+            width: 100px; /* Ajusta la mida del logo segons calgui */
+            height: auto;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #2e8b57;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            text-decoration: none;
+            background-color: #3cb371; /* Verd mitjà */
+            color: white;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #2e8b57; /* Quan passes el ratolí, canvia a verd fosc */
+        }
+
+        footer {
+            background-color: #2e8b57;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://i.ibb.co/NrGTCFL/imatge-removebg-preview.png" alt="Logo Codis TDR" class="logo">
+        <h1>Codis TDR</h1>
+        <div class="dropdown">
+            <button>Seleccionar codi</button>
+            <div class="dropdown-content">
+                <a href="?codi=leibniz">Leibniz</a>
+                <a href="?codi=basilea">Basilea</a>
+                <a href="?codi=brouncker">Brouncker</a>
+                <a href="?codi=john-wallis">John Wallis</a>
+                <a href="?codi=ramanujan">Ramanujan</a>
+                <a href="?codi=viete">Viète</a>
+                <a href="?codi=bbp">BBP</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container" id="codi-container">
+            <!-- Aquí es mostrarà el botó del codi corresponent -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Codis TDR. Tots els drets reservats.</p>
+    </footer>
+
+    <script>
+        // Funció per obtenir el valor del paràmetre 'codi' de la URL
+        function getCodiFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('codi');
+        }
+
+        // Mostrar el codi correcte depenent de la URL
+        function mostrarCodi() {
+            const codi = getCodiFromURL();
+            const container = document.getElementById('codi-container');
+
+            // Netejar el contingut
+            container.innerHTML = '';
+
+            // Crear el botó del codi seleccionat
+            if (codi) {
+                const button = document.createElement('a');
+                button.href = `https://colab.research.google.com/drive/${getEnllaç(codi)}`;
+                button.textContent = `Codi ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
+                container.appendChild(button);
+            } else {
+                container.textContent = 'Selecciona un codi del menú desplegable.';
+            }
+        }
+
+        function getEnllaç(codi) {
+            const enllaços = {
+                leibniz: '1GybBcnVZbiNxBsSdWN7HoD421zZsGFy3?usp=sharing',
+                basilea: '1YPS0IcUq98zDi996sJjOx-oZmFuTsl8B?usp=sharing',
+                brouncker: '1lk3kfVhTLEIkxGL0P87aeg-gr9y80h5i?usp=sharing',
+                'john-wallis': '19s3iJTuJb4FgGrSfgjj1HTp5gbe9op-z?usp=sharing',
+                ramanujan: '16hG1gM4HnktyehbqVQWYhZnQ-mZt1wyC?usp=sharing',
+                viete: '11civzhEQG8yf2zmcygHlcTKCqVjqHGmE?usp=sharing',
+                bbp: '1eblBGAnqYKyrdu9r4dP20D6EcTivfQ5W?usp=sharing'
+            };
+            return enllaços[codi];
+        }
+
+        // Cridar la funció en carregar la pàgina
+        window.onload = mostrarCodi;
+    </script>
+
+</body>
+</html>
