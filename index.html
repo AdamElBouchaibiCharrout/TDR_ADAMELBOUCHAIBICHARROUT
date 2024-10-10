@@ -100,6 +100,15 @@
             background-color: #226b43; /* Verd més fosc */
         }
 
+        .explanation {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         footer {
             background-color: #2e8b57;
             color: white;
@@ -134,6 +143,9 @@
         <div class="container" id="codi-container">
             <!-- Aquí es mostrarà el botó del codi corresponent -->
         </div>
+        <div class="explanation" id="explanation">
+            <!-- Aquí es mostrarà l'explicació del codi -->
+        </div>
     </main>
 
     <footer>
@@ -150,9 +162,11 @@
             const codi = getCodiFromURL();
             const container = document.getElementById('codi-container');
             const dropdownButton = document.querySelector('.dropdown button');
+            const explanationDiv = document.getElementById('explanation');
 
             // Netejar el contingut
             container.innerHTML = '';
+            explanationDiv.innerHTML = '';
 
             // Actualitzar el botó amb el codi seleccionat
             if (codi) {
@@ -163,6 +177,9 @@
                 button.href = `https://colab.research.google.com/drive/${getEnllaç(codi)}`;
                 button.textContent = `Codi ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
                 container.appendChild(button);
+
+                // Mostrar l'explicació del codi
+                explanationDiv.innerHTML = getExplicacioCodi(codi);
             } else {
                 container.textContent = 'Selecciona un codi del menú desplegable.';
             }
@@ -179,6 +196,47 @@
                 bbp: '1eblBGAnqYKyrdu9r4dP20D6EcTivfQ5W?usp=sharing'
             };
             return enllaços[codi];
+        }
+
+        function getExplicacioCodi(codi) {
+            const explicacions = {
+                leibniz: `
+                    <strong>Sèrie de Leibniz:</strong> Aquesta sèrie representa el valor de π de la forma:
+                    <br><br>
+                    π/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ...
+                `,
+                basilea: `
+                    <strong>Problema de Basilea:</strong> La sèrie de Basilea es defineix com:
+                    <br><br>
+                    ∑(n=1, ∞) (1/n²) = π²/6
+                `,
+                brouncker: `
+                    <strong>Fracció contínua de Brouncker:</strong> Representació de π com una fracció contínua:
+                    <br><br>
+                    π = 4 / (1 + 1²/(2 + 3²/(2 + 5²/(2 + ...))))
+                `,
+                'john-wallis': `
+                    <strong>Producte infinit de Wallis:</strong> Una aproximació de π mitjançant un producte infinit:
+                    <br><br>
+                    π/2 = (2/1) * (2/3) * (4/3) * (4/5) * (6/5) * (6/7) * ...
+                `,
+                ramanujan: `
+                    <strong>Sèrie de Ramanujan:</strong> Una de les fórmules ràpides de Ramanujan per calcular π:
+                    <br><br>
+                    1/π = (2√2 / 9801) * ∑(n=0, ∞) ((4n)!(1103 + 26390n)) / ((n!)^4 396^{4n})
+                `,
+                viete: `
+                    <strong>Producte infinit de Viète:</strong> Primera representació coneguda de π amb un producte infinit:
+                    <br><br>
+                    2/π = (√2/2) * (√(2+√2)/2) * (√(2+√(2+√2))/2) * ...
+                `,
+                bbp: `
+                    <strong>Fórmula BBP:</strong> Aquesta fórmula permet calcular dígits binaris de π sense calcular els anteriors:
+                    <br><br>
+                    π = ∑(k=0, ∞) (1/16^k) * (4/(8k+1) - 2/(8k+4) - 1/(8k+5) - 1/(8k+6))
+                `
+            };
+            return explicacions[codi];
         }
 
         window.onload = mostrarCodi;
