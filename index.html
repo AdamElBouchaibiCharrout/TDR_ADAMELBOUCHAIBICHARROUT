@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Codis TDR</title>
 
-    <!-- Google Fonts i Font Awesome -->
+    <!-- Google Fonts i MathJax per al LaTeX -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
         body {
@@ -78,6 +79,7 @@
             justify-content: center;
             align-items: center;
             height: 80vh;
+            flex-direction: column;
         }
 
         .container {
@@ -106,6 +108,15 @@
             background-color: #f9f9f9;
             padding: 20px;
             border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pi-game {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            background-color: #fff0f5;
+            padding: 20px;
+            border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -146,6 +157,14 @@
         <div class="explanation" id="explanation">
             <!-- Aquí es mostrarà l'explicació del codi -->
         </div>
+
+        <!-- Joc de pi -->
+        <div class="pi-game">
+            <h2>Endevina dígits del nombre π!</h2>
+            <p>Comença a escriure els dígits de π:</p>
+            <input type="text" id="pi-input" placeholder="3.1415...">
+            <p id="pi-result"></p>
+        </div>
     </main>
 
     <footer>
@@ -153,6 +172,21 @@
     </footer>
 
     <script>
+        const piCorrect = '3.14159265358979323846'; // Fins a 20 decimals de pi
+        let piProgress = '';
+
+        function checkPiInput() {
+            const input = document.getElementById('pi-input').value;
+            if (piCorrect.startsWith(input)) {
+                piProgress = input;
+                document.getElementById('pi-result').textContent = 'Correcte fins ara!';
+            } else {
+                document.getElementById('pi-result').textContent = 'Incorrecte! Intenta-ho de nou.';
+            }
+        }
+
+        document.getElementById('pi-input').addEventListener('input', checkPiInput);
+
         function getCodiFromURL() {
             const params = new URLSearchParams(window.location.search);
             return params.get('codi');
@@ -164,21 +198,17 @@
             const dropdownButton = document.querySelector('.dropdown button');
             const explanationDiv = document.getElementById('explanation');
 
-            // Netejar el contingut
             container.innerHTML = '';
             explanationDiv.innerHTML = '';
 
-            // Actualitzar el botó amb el codi seleccionat
             if (codi) {
                 dropdownButton.textContent = `Codi seleccionat: ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
 
-                // Crear el botó del codi seleccionat
                 const button = document.createElement('a');
                 button.href = `https://colab.research.google.com/drive/${getEnllaç(codi)}`;
                 button.textContent = `Codi ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
                 container.appendChild(button);
 
-                // Mostrar l'explicació del codi
                 explanationDiv.innerHTML = getExplicacioCodi(codi);
             } else {
                 container.textContent = 'Selecciona un codi del menú desplegable.';
@@ -201,39 +231,25 @@
         function getExplicacioCodi(codi) {
             const explicacions = {
                 leibniz: `
-                    <strong>Sèrie de Leibniz:</strong> Aquesta sèrie representa el valor de π de la forma:
-                    <br><br>
-                    π/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ...
+                    <strong>Codi de Leibniz:</strong> Aquest codi implementa una sèrie infinita per aproximar el valor de π utilitzant la fórmula de Leibniz.
                 `,
                 basilea: `
-                    <strong>Problema de Basilea:</strong> La sèrie de Basilea es defineix com:
-                    <br><br>
-                    ∑(n=1, ∞) (1/n²) = π²/6
+                    <strong>Codi de Basilea:</strong> Aquest codi calcula π a partir de la solució del famós problema de Basilea.
                 `,
                 brouncker: `
-                    <strong>Fracció contínua de Brouncker:</strong> Representació de π com una fracció contínua:
-                    <br><br>
-                    π = 4 / (1 + 1²/(2 + 3²/(2 + 5²/(2 + ...))))
+                    <strong>Codi de Brouncker:</strong> Aquest codi utilitza una fracció contínua descoberta per Lord Brouncker per aproximar π.
                 `,
                 'john-wallis': `
-                    <strong>Producte infinit de Wallis:</strong> Una aproximació de π mitjançant un producte infinit:
-                    <br><br>
-                    π/2 = (2/1) * (2/3) * (4/3) * (4/5) * (6/5) * (6/7) * ...
+                    <strong>Codi de John Wallis:</strong> Aquest codi aplica el producte infinit de Wallis per aproximar el valor de π.
                 `,
                 ramanujan: `
-                    <strong>Sèrie de Ramanujan:</strong> Una de les fórmules ràpides de Ramanujan per calcular π:
-                    <br><br>
-                    1/π = (2√2 / 9801) * ∑(n=0, ∞) ((4n)!(1103 + 26390n)) / ((n!)^4 396^{4n})
+                    <strong>Codi de Ramanujan:</strong> Aquest codi fa servir una de les sorprenents fórmules de Ramanujan per calcular π de manera ràpida.
                 `,
                 viete: `
-                    <strong>Producte infinit de Viète:</strong> Primera representació coneguda de π amb un producte infinit:
-                    <br><br>
-                    2/π = (√2/2) * (√(2+√2)/2) * (√(2+√(2+√2))/2) * ...
+                    <strong>Codi de Viète:</strong> Aquest codi implementa el producte infinit de Viète, una de les primeres representacions conegudes de π.
                 `,
                 bbp: `
-                    <strong>Fórmula BBP:</strong> Aquesta fórmula permet calcular dígits binaris de π sense calcular els anteriors:
-                    <br><br>
-                    π = ∑(k=0, ∞) (1/16^k) * (4/(8k+1) - 2/(8k+4) - 1/(8k+5) - 1/(8k+6))
+                    <strong>Codi BBP:</strong> Aquest codi calcula dígits binaris de π directament a partir de la fórmula BBP sense haver de calcular els dígits anteriors.
                 `
             };
             return explicacions[codi];
