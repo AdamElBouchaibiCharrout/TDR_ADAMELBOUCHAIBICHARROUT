@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Codis TDR</title>
+
+    <!-- Google Fonts i MathJax per al LaTeX -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #e6f2e6; /* Fons verd clar */
             color: #2e8b57; /* Verd fosc per al text */
             margin: 0;
@@ -29,7 +35,7 @@
         }
 
         .logo {
-            width: 100px; /* Ajusta la mida del logo segons calgui */
+            width: 100px;
             height: auto;
         }
 
@@ -58,6 +64,12 @@
             background-color: #f1f1f1;
         }
 
+        .dropdown-content a::before {
+            content: '\f0c1'; /* Icona d'enllaç */
+            font-family: 'Font Awesome 5 Free';
+            padding-right: 8px;
+        }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
@@ -67,6 +79,7 @@
             justify-content: center;
             align-items: center;
             height: 80vh;
+            flex-direction: column;
         }
 
         .container {
@@ -78,7 +91,7 @@
             margin: 10px;
             padding: 15px 30px;
             text-decoration: none;
-            background-color: #3cb371; /* Verd mitjà */
+            background-color: #3cb371;
             color: white;
             border-radius: 5px;
             font-size: 1.2rem;
@@ -86,7 +99,25 @@
         }
 
         a:hover {
-            background-color: #2e8b57; /* Quan passes el ratolí, canvia a verd fosc */
+            background-color: #226b43; /* Verd més fosc */
+        }
+
+        .explanation {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pi-game {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            background-color: #fff0f5;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         footer {
@@ -123,6 +154,17 @@
         <div class="container" id="codi-container">
             <!-- Aquí es mostrarà el botó del codi corresponent -->
         </div>
+        <div class="explanation" id="explanation">
+            <!-- Aquí es mostrarà l'explicació del codi -->
+        </div>
+
+        <!-- Joc de pi -->
+        <div class="pi-game">
+            <h2>Endevina dígits del nombre π!</h2>
+            <p>Comença a escriure els dígits de π:</p>
+            <input type="text" id="pi-input" placeholder="3.1415...">
+            <p id="pi-result"></p>
+        </div>
     </main>
 
     <footer>
@@ -130,26 +172,44 @@
     </footer>
 
     <script>
-        // Funció per obtenir el valor del paràmetre 'codi' de la URL
+        const piCorrect = '3.14159265358979323846'; // Fins a 20 decimals de pi
+        let piProgress = '';
+
+        function checkPiInput() {
+            const input = document.getElementById('pi-input').value;
+            if (piCorrect.startsWith(input)) {
+                piProgress = input;
+                document.getElementById('pi-result').textContent = 'Correcte fins ara!';
+            } else {
+                document.getElementById('pi-result').textContent = 'Incorrecte! Intenta-ho de nou.';
+            }
+        }
+
+        document.getElementById('pi-input').addEventListener('input', checkPiInput);
+
         function getCodiFromURL() {
             const params = new URLSearchParams(window.location.search);
             return params.get('codi');
         }
 
-        // Mostrar el codi correcte depenent de la URL
         function mostrarCodi() {
             const codi = getCodiFromURL();
             const container = document.getElementById('codi-container');
+            const dropdownButton = document.querySelector('.dropdown button');
+            const explanationDiv = document.getElementById('explanation');
 
-            // Netejar el contingut
             container.innerHTML = '';
+            explanationDiv.innerHTML = '';
 
-            // Crear el botó del codi seleccionat
             if (codi) {
+                dropdownButton.textContent = `Codi seleccionat: ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
+
                 const button = document.createElement('a');
                 button.href = `https://colab.research.google.com/drive/${getEnllaç(codi)}`;
                 button.textContent = `Codi ${codi.charAt(0).toUpperCase() + codi.slice(1)}`;
                 container.appendChild(button);
+
+                explanationDiv.innerHTML = getExplicacioCodi(codi);
             } else {
                 container.textContent = 'Selecciona un codi del menú desplegable.';
             }
@@ -166,6 +226,34 @@
                 bbp: '1eblBGAnqYKyrdu9r4dP20D6EcTivfQ5W?usp=sharing'
             };
             return enllaços[codi];
+        }
+
+        function getExplicacioCodi(codi) {
+            const explicacions = {
+                leibniz: `
+                    <strong>Codi de Leibniz:</strong> Aquest codi implementa una sèrie infinita per aproximar el valor de π utilitzant la fórmula de Leibniz.
+                    <a href="https://ibb.co/p37spQX"><img src="https://i.ibb.co/fCgK790/aproximacio-pi.gif" alt="aproximacio-pi" border="0"></a>
+                `,
+                basilea: `
+                    <strong>Codi de Basilea:</strong> Aquest codi calcula π a partir de la solució del famós problema de Basilea.
+                `,
+                brouncker: `
+                    <strong>Codi de Brouncker:</strong> Aquest codi utilitza una fracció contínua descoberta per Lord Brouncker per aproximar π.
+                `,
+                'john-wallis': `
+                    <strong>Codi de John Wallis:</strong> Aquest codi aplica el producte infinit de Wallis per aproximar el valor de π.
+                `,
+                ramanujan: `
+                    <strong>Codi de Ramanujan:</strong> Aquest codi fa servir una de les sorprenents fórmules de Ramanujan per calcular π de manera ràpida.
+                `,
+                viete: `
+                    <strong>Codi de Viète:</strong> Aquest codi implementa el producte infinit de Viète, una de les primeres representacions conegudes de π.
+                `,
+                bbp: `
+                    <strong>Codi BBP:</strong> Aquest codi calcula dígits binaris de π directament a partir de la fórmula BBP sense haver de calcular els dígits anteriors.
+                `
+            };
+            return explicacions[codi];
         }
 
         // Cridar la funció en carregar la pàgina
